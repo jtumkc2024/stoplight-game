@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import LeftSideNav from "../components/LeftSideNav";
 import Stoplight from "../components/StopLight";
 
@@ -11,10 +12,13 @@ export default function End() {
             Stop Light Game
           </h1>
         </header>
-        <p>
-          ** Input home page explanation of game. **
-        </p>
         <Stoplight disabled={true} />
+        <h2 className="h2 text-center">
+          You win!!!
+        </h2>
+        <Link to="/Game">
+          <button className="hover:bg-gray-400 text-center py-2 px-3 rounded">Play Again!</button>
+        </Link>
       </div>
     </div>
   )

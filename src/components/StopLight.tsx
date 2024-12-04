@@ -1,32 +1,33 @@
 import { useState } from 'react'
 
-type LightColor = 'red' | 'yellow' | 'green'
+const lights = {
+  Red: 0,
+  Yellow: 1,
+  Green: 2
+}
 
 type StoplightProps = {
-    disabled?: boolean
+    disabled?: boolean,
+    setScore?: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function Stoplight(props: StoplightProps) {
-    const [activeLight, setActiveLight] = useState<LightColor>('red')
+  const { disabled, setScore } = props;
+  const [activeLight, setActiveLight] = useState<number>(lights.Red);
 
   const cycleLight = () => {
-    setActiveLight(current => {
-      switch (current) {
-        case 'red': return 'green'
-        case 'green': return 'yellow'
-        case 'yellow': return 'red'
-      }
-    })
+    setActiveLight(Math.floor(Math.random() * 100 % 3));
+    if (setScore) setScore((prev) => prev + 1);
   }
 
-  if (props.disabled) {
+  if (disabled) {
     return (
         <div className="m-4 flex flex-col items-center justify-center w-fit bg-gray-100">
           <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
             <div className="flex flex-col gap-4 mb-4">
-              <Light color="red" isActive={activeLight === 'red'} />
-              <Light color="yellow" isActive={activeLight === 'yellow'} />
-              <Light color="green" isActive={activeLight === 'green'} />
+              <Light color={lights.Red} isActive={activeLight === lights.Red} />
+              <Light color={lights.Yellow} isActive={activeLight === lights.Yellow} />
+              <Light color={lights.Green} isActive={activeLight === lights.Green} />
             </div>
           </div>      
         </div>
@@ -36,38 +37,34 @@ export default function Stoplight(props: StoplightProps) {
     <div className="m-4 flex flex-col items-center justify-center w-fit bg-gray-100">
       <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
         <div className="flex flex-col gap-4 mb-4">
-          <Light color="red" isActive={activeLight === 'red'} />
-          <Light color="yellow" isActive={activeLight === 'yellow'} />
-          <Light color="green" isActive={activeLight === 'green'} />
+          <Light color={lights.Red} isActive={activeLight === lights.Red} onSuccess={cycleLight}/>
+          <Light color={lights.Yellow} isActive={activeLight === lights.Yellow} onSuccess={cycleLight}/>
+          <Light color={lights.Green} isActive={activeLight === lights.Green} onSuccess={cycleLight}/>
         </div>
       </div>
-      
-      <button onClick={cycleLight} className="btn">
-        Change Light
-      </button>
     </div>
   )
 }
 
 interface LightProps {
-  color: LightColor
-  isActive: boolean
+  color: number
+  isActive: boolean,
+  onSuccess?: () => void
 }
 
-function Light({ color, isActive }: LightProps) {
+function Light({ color, isActive, onSuccess }: LightProps) {
   const baseClasses = "w-16 h-16 rounded-full border-4 border-gray-700"
   const activeClass = isActive ? 'opacity-100' : 'opacity-30'
-  const colorClasses = {
-    red: 'bg-red-500',
-    yellow: 'bg-yellow-500',
-    green: 'bg-green-500'
-  }
+  const colorClasses = ['bg-red-500', 'bg-yellow-500', 'bg-green-500']
 
   return (
     <div 
       className={`${baseClasses} ${colorClasses[color]} ${activeClass}`}
       role="img"
       aria-label={`${color} light ${isActive ? 'on' : 'off'}`}
+      onClick={() => {
+        if (isActive && onSuccess) onSuccess();
+      }}
     />
   )
 }

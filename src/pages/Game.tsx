@@ -1,20 +1,29 @@
+import { useEffect, useState } from "react";
 import LeftSideNav from "../components/LeftSideNav";
 import Stoplight from "../components/StopLight";
+import { useNavigate } from "react-router-dom";
 
 export default function Game() {
+  const navigate = useNavigate();
+  const [score, setScore] = useState<number>(0);
+  useEffect(() => {
+    if (score >= 3) {
+      navigate('/end');
+    }
+  }, [score]);
   return (
     <div className='flex bg-gray-100'>
       <LeftSideNav />
       <div id="page-content" className="w-full flex flex-col items-center justify-center">
         <header>
           <h1 className="h1">
-            Stop Light Game
+            Play!!
           </h1>
+          <p className="text-center">
+            Current: {score}
+          </p>
         </header>
-        <p>
-          ** Input home page explanation of game. **
-        </p>
-        <Stoplight />
+        <Stoplight setScore={setScore} />
       </div>
     </div>
   );
