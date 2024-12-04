@@ -15,7 +15,7 @@ export default function Game() {
     <div className='flex bg-gray-100'>
       <LeftSideNav />
       <div id="page-content" className="w-full flex flex-col items-center justify-center">
-        <header>
+        <header className="mb-10">
           <h1 className="h1">
             Play!!
           </h1>

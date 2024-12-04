@@ -16,6 +16,9 @@ export default function Home() {
           Get ready to play the Stop Light Game!
         </p>
         <p>
+          Match the words to the color!
+        </p>
+        <p>
           Three correct guesses and you win!
         </p>
         <Stoplight disabled={true} />
